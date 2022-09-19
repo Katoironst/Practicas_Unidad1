@@ -1,0 +1,189 @@
+//Memorama-Práctica #4
+
+//Joaquín Emiliano Cato Sosa 21590088
+
+package com.example.memorama_pract4;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.media.Image;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class MainActivity extends AppCompatActivity {
+
+    //Variables para los componentes de la vista
+    ImageButton imb00, imb01, imb02, imb03, imb04, imb05, imb06, imb07, imb08, imb09, imb10, imb11, imb12, imb13, imb14, imb15;
+    ImageButton[] tablero = new ImageButton[16];
+    TextView textoPuntuacion;
+    int puntuacion;
+    int aciertos;
+
+    //Imágenes
+    int[] imagenes;
+    int fondo;
+
+    //Variables del Juego
+    ArrayList<Integer> arrayDesordenado;
+    ImageButton primero;
+    int numeroPrimero, numeroSegundo;
+    boolean bloqueo = false;
+    final Handler handler = new Handler();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        init();
+    }
+
+    private void cargarTablero(){
+        imb00 = findViewById(R.id.b00);
+        imb01 = findViewById(R.id.b01);
+        imb02 = findViewById(R.id.b02);
+        imb03 = findViewById(R.id.b03);
+        imb04 = findViewById(R.id.b10);
+        imb05 = findViewById(R.id.b11);
+        imb06 = findViewById(R.id.b12);
+        imb07 = findViewById(R.id.b13);
+        imb08 = findViewById(R.id.b20);
+        imb09 = findViewById(R.id.b21);
+        imb10 = findViewById(R.id.b22);
+        imb11 = findViewById(R.id.b23);
+        imb12 = findViewById(R.id.b30);
+        imb13 = findViewById(R.id.b31);
+        imb14 = findViewById(R.id.b32);
+        imb15 = findViewById(R.id.b33);
+
+        tablero[0] = imb00;
+        tablero[1] = imb01;
+        tablero[2] = imb02;
+        tablero[3] = imb03;
+        tablero[4] = imb04;
+        tablero[5] = imb05;
+        tablero[6] = imb06;
+        tablero[7] = imb07;
+        tablero[8] = imb08;
+        tablero[9] = imb09;
+        tablero[10] = imb10;
+        tablero[11] = imb11;
+        tablero[12] = imb12;
+        tablero[13] = imb13;
+        tablero[14] = imb14;
+        tablero[15] = imb15;
+    }
+
+    private void cargarTexto(){
+        textoPuntuacion = findViewById(R.id.textoPuntuacion);
+        puntuacion = 0;
+        aciertos = 0;
+        textoPuntuacion.setText("Puntuación: "+puntuacion);
+    }
+
+    private void cargarImagenes(){
+        imagenes = new int[]{
+                R.drawable.bob_esponja_pixel_art,
+                R.drawable.escudo_capit_n_am_rica_pixel_art,
+                R.drawable.kirby_pixel_art,
+                R.drawable.pikachu_pixel_art,
+                R.drawable.pizza_pixel_art,
+                R.drawable.plankton_pixel,
+                R.drawable.taco_pixel_art,
+                R.drawable.winnie_the_pooh_pixel_art
+        };
+        fondo = R.drawable.florecita;
+    }
+
+    private ArrayList<Integer> barajar(int longitud){
+        ArrayList<Integer> result = new ArrayList<>();
+        for (int i=0; i<longitud; i++){
+            result.add(1 % longitud);
+        }
+        Collections.shuffle(result);
+        return result;
+    }
+
+    private void comprobar(int i, final ImageButton imgb){
+        if (primero == null){
+            primero = imgb;
+            primero.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            primero.setImageResource(imagenes[arrayDesordenado.get(i)]);
+            primero.setEnabled(false);
+            numeroPrimero = arrayDesordenado.get(i);
+        }else{
+            bloqueo = true;
+            imgb.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imgb.setImageResource(imagenes[arrayDesordenado.get(i)]);
+            imgb.setEnabled(false);
+            numeroSegundo = arrayDesordenado.get(i);
+            if(numeroPrimero == numeroSegundo){
+                primero = null;
+                bloqueo = false;
+                aciertos++;
+                puntuacion++;
+                textoPuntuacion.setText("Puntuación: "+puntuacion);
+                if(aciertos == imagenes.length){
+                    Toast toast = Toast.makeText(getApplicationContext(), "¡¡Ganaste!!", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+            }else{
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        primero.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                        primero.setImageResource(fondo);
+                        primero.setEnabled(true);
+                        imgb.setScaleType((ImageView.ScaleType.CENTER_CROP));
+                        imgb.setImageResource(fondo);
+                        imgb.setEnabled(true);
+                        bloqueo = false;
+                        primero = null;
+                        puntuacion--;
+                        textoPuntuacion.setText("Puntuación: " + puntuacion);
+                    }
+                }, 1000);
+            }
+        }
+    }
+
+    private void init(){
+        cargarTablero();
+        cargarTexto();
+        cargarImagenes();
+        arrayDesordenado = barajar(imagenes.length);
+        for(int i=0; i< tablero.length; i++){
+            tablero[i].setScaleType(ImageView.ScaleType.CENTER_CROP);
+            tablero[i].setImageResource(imagenes[arrayDesordenado.get(i)]);
+        }
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                for(int i=0; i< tablero.length; i++){
+                    tablero[i].setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    tablero[i].setImageResource(fondo);
+                }
+            }
+        }, 2000);
+        for(int i=0; i< tablero.length; i++){
+            final int j  = i;
+            tablero[i].setEnabled(true);
+            tablero[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(!bloqueo){
+                        comprobar(j, tablero[j]);
+                    }
+                }
+            });
+        }
+    }
+
+}
