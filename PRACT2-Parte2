@@ -1,0 +1,48 @@
+//PRACT2-Parte2
+package com.example.pract2;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
+
+public class Datos_Personales extends AppCompatActivity {
+
+    private TextView Nombres, ApellidoPaterno, ApellidoMaterno, Colonia_, CodigoPostal_, Calle_, Estado_, Municipio_;
+            Bundle datos_nombre, datos_apellidoP;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_datos_personales);
+
+        Nombres = findViewById(R.id.Nombres);
+        ApellidoPaterno = findViewById(R.id.ApellidoPaterno);
+        ApellidoMaterno = findViewById(R.id.ApellidoMaterno);
+        Colonia_ = findViewById(R.id.Colonia_);
+        CodigoPostal_ = findViewById(R.id.CodigoPostal_);
+        Calle_ = findViewById(R.id.Calle_);
+        Estado_ = findViewById(R.id.Estado_);
+        Municipio_ = findViewById(R.id.Municipio_);
+
+        datos_nombre = getIntent().getExtras();
+        Nombres.setText(datos_nombre.getString("nombre_completo"));
+
+        datos_apellidoP = getIntent().getExtras();
+        ApellidoPaterno.setText(datos_apellidoP.getString("apellidp_paterno"));
+
+        /*
+        ApellidoMaterno.setText(datos.getString("apellido_materno"));
+        Colonia_.setText(datos.getString("colonia"));
+        CodigoPostal_.setText(datos.getString("codigo_postal"));
+        Calle_.setText(datos.getString("calle"));
+        Estado_.setText(datos.getString("estado"));
+        Municipio_.setText(datos.getString("municipio"));
+         */
+    }
+
+    public void Regresar(View view){
+        finish();
+    }
+}
