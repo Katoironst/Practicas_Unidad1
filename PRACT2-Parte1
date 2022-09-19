@@ -1,0 +1,79 @@
+//Main Activity
+//Joaquín Emiliano Cato Sosa 21590088
+
+package com.example.pract2;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+
+public class MainActivity extends AppCompatActivity {
+
+    private String nombre_completo = "Joaquin Emiliano";
+    private String apellido_paterno = "Cato";
+    private String apellido_materno = "Sosa";
+    private String colonia = "Claustros";
+    private String codigo_postal = "76803";
+    private String calle = "Santa Clara";
+    private String estado = "Queretaro";
+    private String municipio = "San Juan del Rio";
+
+    private EditText nomC, apP, apM, col, cp, cll, est, mn;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        nomC = findViewById(R.id.Nombre_C);
+        apP = findViewById(R.id.Apellido_P);
+        apM = findViewById(R.id.Apellido_M);
+        col = findViewById(R.id.Colonia);
+        cp = findViewById(R.id.CodigoPostal);
+        cll = findViewById(R.id.Calle);
+        est = findViewById(R.id.Estado);
+        mn = findViewById(R.id.Municipio);
+    }
+
+    public void validar(View view){
+        Intent datos_nombre = new Intent(MainActivity.this, Datos_Personales.class);
+        Intent datos_apellidoP = new Intent(MainActivity.this, Datos_Personales.class);
+
+        String NC = nomC.getText().toString();
+        String AP = apP.getText().toString();
+        String AM = apM.getText().toString();
+        String COL = col.getText().toString();
+        String CP = cp.getText().toString();
+        String CLL = cll.getText().toString();
+        String EST = est.getText().toString();
+        String MN = mn.getText().toString();
+
+        datos_nombre.putExtra("nombre_completo", nombre_completo);
+        datos_apellidoP.putExtra("apellido_paterno", apellido_paterno);
+
+        /*
+        datos_p.putExtra("apellido_materno", apellido_materno);
+        datos_p.putExtra("colonia", colonia);
+        datos_p.putExtra("codigo_postal", codigo_postal);
+        datos_p.putExtra("calle", calle);
+        datos_p.putExtra("estado", estado);
+        datos_p.putExtra("municipio", municipio);
+
+         */
+    }
+
+    public void limpiar(View view){
+        nomC.setText("");
+        apP.setText("");
+        apM.setText("");
+        col.setText("");
+        cp.setText("");
+        cll.setText("");
+        est.setText("");
+        mn.setText("");
+    }
+
+}
