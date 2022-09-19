@@ -1,0 +1,40 @@
+//Programa de Saludo desarrollado por: Joaquín Emiliano Cato Sosa 21590088 - 24 de Agosto del 2022
+
+package com.example.pract3;
+
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+public class MainActivity extends AppCompatActivity {
+
+    private EditText nombre;
+    private Button bNombre;
+    private TextView resultado;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        nombre=(EditText) findViewById(R.id.nombre);
+        bNombre=(Button) findViewById(R.id.bNombre);
+        resultado=(TextView) findViewById(R.id.resultado);
+    }
+
+    //Aquí se construyen los métodos que vamos a utilizar.
+
+    public void saludo(View view){
+        String n;
+        n=nombre.getText().toString();
+        resultado.setText("Hola "+n+" ¿cómo estás?");
+    }
+
+    public void limpiar(View view){
+        nombre.setText("");
+        resultado.setText("");
+    }
+}
